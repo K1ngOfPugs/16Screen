@@ -96,7 +96,6 @@ func main() {
 	c.Println("[*] Payload complete. Your Screentime PIN is: ")
 	c.Println("[*] " + color.RedString(out))
 
-	/*
 	reader := bufio.NewReader(os.Stdin)
 	c.Println("[*] Would you like to remove your Apple ID? [y/N]: ")
 	input, _ := reader.ReadString('\n')
@@ -107,7 +106,6 @@ func main() {
 		c.Println("[*] Removing Apple ID...")
 		_, _ = client.Run("bash -c '/var/mobile/id.sh'")
 	}
-	*/
 
 	close(nil)
 }
