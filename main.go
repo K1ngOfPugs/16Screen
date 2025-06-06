@@ -1,14 +1,14 @@
 package main
 
 import (
-	//"bufio"
+	"bufio"
 	_ "embed"
 	"github.com/fatih/color"
 	"github.com/melbahja/goph"
 	"log"
 	"os"
 	"os/signal"
-	//"strings"
+	"strings"
 	"syscall"
 )
 
