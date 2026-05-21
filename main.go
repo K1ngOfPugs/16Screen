@@ -10,6 +10,8 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"flag"
+	"fmt"
 )
 
 //go:embed payload/keychain_dumper
@@ -55,12 +57,23 @@ func sendFiles() {
 	uploaded = true
 }
 
-func initSSH() {
-	client, err = goph.NewUnknown("mobile", "127.0.0.1", goph.Password("alpine"))
+func initSSH(pass string) {
+	italic := color.New(color.Italic, color.FgCyan).SprintFunc()
+
+	if pass != "" {
+		client, err = goph.NewUnknown("mobile", "127.0.0.1", goph.Password(pass))
+	} else {
+		client, err = goph.NewUnknown("mobile", "127.0.0.1", goph.Password("alpine"))
+	}
+
 	if err != nil {
-		color.Red("[*] Error connecting to phone.")
+		if pass == "" {
+			color.Red("[*] Error connecting to phone using default password " + italic("alpine"))
+		} else {
+			color.Red("[*] Error connecting to phone using custom password")
+		}
 		color.Red("[*] Please make sure your SSH tunnel is active.")
-		close(err)
+		close(nil)
 	}
 }
 
@@ -70,17 +83,31 @@ func interruptHandler(ch chan os.Signal) {
 }
 
 func main() {
+	password := flag.String("p", "", "iOS SSH Password")
+	help := flag.Bool("help", false, "Show help info")
+	flag.Parse()
+
+	if *help {
+		fmt.Println("HELP MENU:\n")
+		fmt.Println("-help\n	Shows this menu")
+		fmt.Println("-p\n	Use a custom SSH password")
+		close(nil)
+	}
+
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, os.Interrupt, syscall.SIGTERM)
 
 	go interruptHandler(ch)
 
 	c := color.New(color.FgCyan)
+	reader := bufio.NewReader(os.Stdin)
 
-	c.Println("[*] 16Screen bypass by K1ngOfPugs")
+	c.Println("[*] 16Screen bypass by K1ngOfPugs - 2026 Edition")
+	c.Println("[*] Press ENTER to connect to phone.")
+	reader.ReadString('\n')
 	c.Println("[*] Connecting to phone...")
 
-	initSSH()
+	initSSH(*password)
 
 	c.Println("[*] Connected. Sending payload...")
 
@@ -96,7 +123,6 @@ func main() {
 	c.Println("[*] Payload complete. Your Screentime PIN is: ")
 	c.Println("[*] " + color.RedString(out))
 
-	reader := bufio.NewReader(os.Stdin)
 	c.Println("[*] Would you like to remove your Apple ID? [y/N]: ")
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(strings.ToLower(input))
