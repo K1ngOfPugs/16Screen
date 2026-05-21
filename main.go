@@ -77,7 +77,7 @@ func main() {
 
 	c := color.New(color.FgCyan)
 
-	c.Println("[*] 12Screen bypass by K1ngOfPugs")
+	c.Println("[*] 16Screen bypass by K1ngOfPugs")
 	c.Println("[*] Connecting to phone...")
 
 	initSSH()
