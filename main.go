@@ -88,8 +88,8 @@ func main() {
 	flag.Parse()
 
 	if *help {
-		fmt.Println("HELP MENU:\n")
-		fmt.Println("-help\n	Shows this menu")
+		fmt.Println("HELP MENU:")
+		fmt.Println("\n-help\n	Shows this menu")
 		fmt.Println("-p\n	Use a custom SSH password")
 		close(nil)
 	}
