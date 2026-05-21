@@ -1,6 +1,6 @@
 module 16Screen
 
-go 1.23.3
+go 1.23
 
 require (
 	github.com/akavel/rsrc v0.10.2 // indirect
